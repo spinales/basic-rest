@@ -72,7 +72,7 @@ func (s *Service) PutProduct(c echo.Context) error {
 	return c.JSON(http.StatusOK, uprod)
 }
 
-func (s *Service) DeleteEquipo(c echo.Context) error {
+func (s *Service) DeleteProduct(c echo.Context) error {
 	id, err := strconv.ParseUint(c.Param("id"), 10, 32)
 	if err != nil {
 		log.Fatalln("turning ID: %w", err)
