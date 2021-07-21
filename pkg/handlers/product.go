@@ -58,7 +58,7 @@ func (s *Service) PutProduct(c echo.Context) error {
 	}
 
 	var p model.Product
-	if err := c.Bind(p); err != nil {
+	if err := c.Bind(&p); err != nil {
 		log.Fatalln("procesing product: %w", err)
 		return c.JSON(http.StatusBadRequest, err)
 	}

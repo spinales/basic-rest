@@ -1,12 +1,14 @@
-package server
+package main
 
 import (
 	"basic-rest/pkg/handlers"
 	storage "basic-rest/pkg/storage/sqlite"
 	"flag"
 	"fmt"
+	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	driver "gorm.io/driver/sqlite"
 
 	"gorm.io/gorm"
@@ -19,13 +21,12 @@ func main() {
 		panic(err)
 	}
 
-	var migrate string
-	flag.StringVar(&migrate, "migrate", "no", "Genera la migracion de la base de datos.")
+	migrate := flag.Bool("migrate", false, "Genera la migracion de la base de datos.")
 	flag.Parse()
 
-	if migrate == "yes" {
+	if *migrate {
 		fmt.Println("Comenzo la Migracion...")
-		// sqlite.Migrate(DB)
+		storage.Migrate(DB)
 		fmt.Println("Termino la Migracion...")
 	}
 
@@ -35,17 +36,17 @@ func main() {
 
 	e := echo.New()
 
-	// e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-	// 	AllowOrigins: []string{"*"},
-	// 	AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
-	// 	AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
-	// }))
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"*"},
+		AllowMethods: []string{http.MethodGet, http.MethodHead, http.MethodPut, http.MethodPatch, http.MethodPost, http.MethodDelete},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 
 	e.GET("/product", service.GetProducts)
-	e.GET("/equipo/:id", service.GetProduct)
-	e.POST("/equipo", service.PostProduct)
-	e.PUT("/equipo/:id", service.PutProduct)
-	e.DELETE("/equipo/:id", service.DeleteProduct)
+	e.GET("/product/:id", service.GetProduct)
+	e.POST("/product", service.PostProduct)
+	e.PUT("/product/:id", service.PutProduct)
+	e.DELETE("/product/:id", service.DeleteProduct)
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

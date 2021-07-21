@@ -1,0 +1,6 @@
+projectKey=Basic-Rest
+serverUrl=http://localhost:9000
+serverVersion=9.0.0.45539
+dashboardUrl=http://localhost:9000/dashboard?id=Basic-Rest
+ceTaskId=AXrEcHGinacyEiLB_Gib
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AXrEcHGinacyEiLB_Gib
